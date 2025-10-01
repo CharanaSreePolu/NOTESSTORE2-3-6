@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes Store</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">📚 Notes Store</div>
+  <nav><a href="cart.html">🛒 Cart (<span id="cart-count">0</span>)</a></nav>
+</header>
+
+<section class="hero">
+  <h1>Welcome to Notes Store</h1>
+  <p>Get BTech, Diploma & Competitive Exam Notes with PDF + Video Access!</p>
+</section>
+
+<!-- Search Bar -->
+<section class="search-bar">
+  <input type="text" id="search-input" placeholder="Search for subjects..." onkeyup="searchSubjects()">
+</section>
+
+<main>
+  <h2>Available Subjects</h2>
+  <div class="products"></div>
+</main>
+
+<script>
+// Subjects Data
+const subjects = [
+  {name:"Mathematics",price:199,img:"images/mathematics.jpg",pdf:"pdfs/mathematics.pdf",video:"videos/mathematics.mp4",sampleVideo:"videos/sample_mathematics.mp4",samplePdf:"pdfs/sample_mathematics.pdf"},
+  {name:"Physics",price:199,img:"images/physics.jpg",pdf:"pdfs/physics.pdf",video:"videos/physics.mp4",sampleVideo:"videos/sample_physics.mp4",samplePdf:"pdfs/sample_physics.pdf"},
+  {name:"Chemistry",price:199,img:"images/chemistry.jpg",pdf:"pdfs/chemistry.pdf",video:"videos/chemistry.mp4",sampleVideo:"videos/sample_chemistry.mp4",samplePdf:"pdfs/sample_chemistry.pdf"},
+  {name:"Electrical",price:249,img:"images/electrical.jpg",pdf:"pdfs/electrical.pdf",video:"videos/electrical.mp4",sampleVideo:"videos/sample_electrical.mp4",samplePdf:"pdfs/sample_electrical.pdf"},
+  {name:"Electronics",price:249,img:"images/electronics.jpg",pdf:"pdfs/electronics.pdf",video:"videos/electronics.mp4",sampleVideo:"videos/sample_electronics.mp4",samplePdf:"pdfs/sample_electronics.pdf"},
+  {name:"C Programming",price:199,img:"images/c_programming.jpg",pdf:"pdfs/c_programming.pdf",video:"videos/c_programming.mp4",sampleVideo:"videos/sample_c_programming.mp4",samplePdf:"pdfs/sample_c_programming.pdf"},
+  {name:"Data Structures",price:249,img:"images/data_structures.jpg",pdf:"pdfs/data_structures.pdf",video:"videos/data_structures.mp4",sampleVideo:"videos/sample_data_structures.mp4",samplePdf:"pdfs/sample_data_structures.pdf"},
+  {name:"Operating Systems",price:249,img:"images/operating_systems.jpg",pdf:"pdfs/operating_systems.pdf",video:"videos/operating_systems.mp4",sampleVideo:"videos/sample_operating_systems.mp4",samplePdf:"pdfs/sample_operating_systems.pdf"},
+  {name:"DBMS",price:249,img:"images/dbms.jpg",pdf:"pdfs/dbms.pdf",video:"videos/dbms.mp4",sampleVideo:"videos/sample_dbms.mp4",samplePdf:"pdfs/sample_dbms.pdf"},
+  {name:"Networks",price:199,img:"images/networks.jpg",pdf:"pdfs/networks.pdf",video:"videos/networks.mp4",sampleVideo:"videos/sample_networks.mp4",samplePdf:"pdfs/sample_networks.pdf"},
+  {name:"Digital Electronics",price:249,img:"images/digital_electronics.jpg",pdf:"pdfs/digital_electronics.pdf",video:"videos/digital_electronics.mp4",sampleVideo:"videos/sample_digital_electronics.mp4",samplePdf:"pdfs/sample_digital_electronics.pdf"},
+  {name:"Control Systems",price:249,img:"images/control_systems.jpg",pdf:"pdfs/control_systems.pdf",video:"videos/control_systems.mp4",sampleVideo:"videos/sample_control_systems.mp4",samplePdf:"pdfs/sample_control_systems.pdf"},
+  {name:"Signals & Systems",price:249,img:"images/signals_systems.jpg",pdf:"pdfs/signals_systems.pdf",video:"videos/signals_systems.mp4",sampleVideo:"videos/sample_signals_systems.mp4",samplePdf:"pdfs/sample_signals_systems.pdf"},
+  {name:"Communication Systems",price:299,img:"images/communication_systems.jpg",pdf:"pdfs/communication_systems.pdf",video:"videos/communication_systems.mp4",sampleVideo:"videos/sample_communication_systems.mp4",samplePdf:"pdfs/sample_communication_systems.pdf"},
+  {name:"Embedded Systems",price:299,img:"images/embedded_systems.jpg",pdf:"pdfs/embedded_systems.pdf",video:"videos/embedded_systems.mp4",sampleVideo:"videos/sample_embedded_systems.mp4",samplePdf:"pdfs/sample_embedded_systems.pdf"},
+  {name:"VLSI",price:349,img:"images/vlsi.jpg",pdf:"pdfs/vlsi.pdf",video:"videos/vlsi.mp4",sampleVideo:"videos/sample_vlsi.mp4",samplePdf:"pdfs/sample_vlsi.pdf"},
+  {name:"AI & ML",price:349,img:"images/ai_ml.jpg",pdf:"pdfs/ai_ml.pdf",video:"videos/ai_ml.mp4",sampleVideo:"videos/sample_ai_ml.mp4",samplePdf:"pdfs/sample_ai_ml.pdf"},
+  {name:"E-Commerce",price:149,img:"images/ecommerce.jpg",pdf:"pdfs/ecommerce.pdf",video:"videos/ecommerce.mp4",sampleVideo:"videos/sample_ecommerce.mp4",samplePdf:"pdfs/sample_ecommerce.pdf"},
+  {name:"Engineering Drawing",price:199,img:"images/engineering_drawing.jpg",pdf:"pdfs/engineering_drawing.pdf",video:"videos/engineering_drawing.mp4",sampleVideo:"videos/sample_engineering_drawing.mp4",samplePdf:"pdfs/sample_engineering_drawing.pdf"},
+  {name:"Thermodynamics",price:249,img:"images/thermodynamics.jpg",pdf:"pdfs/thermodynamics.pdf",video:"videos/thermodynamics.mp4",sampleVideo:"videos/sample_thermodynamics.mp4",samplePdf:"pdfs/sample_thermodynamics.pdf"},
+
+  {name:"Competitive Aptitude",price:199,img:"images/competitive_aptitude.jpg",pdf:"pdfs/competitive_aptitude.pdf",video:"videos/competitive_aptitude.mp4",sampleVideo:"videos/sample_competitive_apptitude.mp4",samplePdf:"pdfs/sample_competitive_aptitude.pdf"},
+{name:"Compass Surveying",price:199,img:"images/compass_surveying.jpg",pdf:"pdfs/compass_surveying.pdf",video:"videos/compass_surveying.mp4",sampleVideo:"videos/sample_compass_surveying.mp4",samplePdf:"pdfs/sample_compass_surveying.pdf"},
+  {name:"Levelling Survey",price:199,img:"images/levelling_survey.jpg",pdf:"pdfs/levelling_survey.pdf",video:"videos/levelling_survey.mp4",sampleVideo:"videos/sample_levelling_survey.mp4",samplePdf:"pdfs/sample_levelling_survey.pdf"}
+];
+
+// Display Products
+let container = document.querySelector(".products");
+subjects.forEach(sub => {
+  container.innerHTML += `
+  <div class="product-card">
+    <img src="${sub.img}" alt="${sub.name}">
+    <h3>${sub.name}</h3>
+    <p>₹${sub.price}</p>
+    <button onclick="addToCart('${sub.name}',${sub.price},'${sub.pdf}','${sub.video}','${sub.img}')">Add to Cart</button>
+    <button onclick="viewSample('${sub.samplePdf}','${sub.sampleVideo}','${sub.name}')">View Sample</button>
+  </div>`;
+
+});
+
+// Search Function
+function searchSubjects() {
+  const input = document.getElementById("search-input").value.toLowerCase();
+  document.querySelectorAll(".product-card").forEach(card => {
+    const title = card.querySelector("h3").innerText.toLowerCase();
+    card.style.display = title.includes(input) ? "block" : "none";
+  });
+}
+</script>
+</body>
+</html>
